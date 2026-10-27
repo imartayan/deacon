@@ -514,6 +514,7 @@ dependencies = [
  "flate2",
  "gzp",
  "hashbrown 0.17.1",
+ "helicase",
  "indicatif",
  "liblzma",
  "minreq",
@@ -596,6 +597,12 @@ checksum = "71958f69fb2de856c5dd51ac9377e986ca1aa5919f931bf5395a807277f889a0"
 dependencies = [
  "thiserror 2.0.21",
 ]
+
+[[package]]
+name = "deko"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83c5c3f0ad826f7b26482496465352171d43af06a0d4b7b8ad3680169a6ec7cb"
 
 [[package]]
 name = "difflib"
@@ -851,6 +858,20 @@ name = "heck"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
+
+[[package]]
+name = "helicase"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ea350785fa5dad741bc1763c4458baa662e699d18512717800bf7b4039bf343"
+dependencies = [
+ "deko",
+ "memchr",
+ "memmap2",
+ "paraseq",
+ "sirocco",
+ "zstd 0.14.3",
+]
 
 [[package]]
 name = "hermit-abi"

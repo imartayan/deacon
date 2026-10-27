@@ -42,6 +42,7 @@ paraseq = { version = "0.6.0", default-features = false, features = ["anyhow", "
 # We need binseq >=0.9.6 for safe canonicalisation of non-N ambiguous bases to N
 binseq = { version = "0.10.0", default-features = false, features = ["anyhow"], optional = true }
 ensure_simd = { version = "0.1.1", optional = true }
+helicase = { version = "1.1", features = ["paraseq"], optional = true }
 
 # Compression deps (optional)
 liblzma = { version = "0.4", optional = true, features = ["static"] }
@@ -71,6 +72,8 @@ flate2 = "1.1"
 scalar = ["simd-minimizers/scalar", "packed-seq/scalar"]
 # Native filtering and index operations
 io = ["rayon", "parking_lot", "indicatif", "paraseq", "binseq", "niffler", "serde_json", "rand"]
+# Experimental helicase backend for single FASTX files
+helicase = ["io", "dep:helicase"]
 # CLI
 cli = ["io", "clap", "ensure_simd", "tracing-subscriber"]
 # Pure Rust gz i/o

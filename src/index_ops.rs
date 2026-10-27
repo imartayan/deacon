@@ -550,8 +550,22 @@ pub fn build(config: &BuildConfig) -> Result<()> {
             reader.process_parallel(processor.clone(), config.threads as usize)?;
         }
     } else {
-        let reader = reader_with_inferred_batch_size(in_path)?;
-        reader.process_parallel(&mut processor, config.threads as usize)?;
+        #[cfg(feature = "helicase")]
+        if let Some(path) = in_path.filter(|p| !crate::filter_io::is_special_input_path(p)) {
+            crate::helicase_io::process_parallel::<{ crate::helicase_io::SEQ_CONFIG }, _>(
+                path,
+                &mut processor,
+                config.threads as usize,
+            )?;
+        } else {
+            let reader = reader_with_inferred_batch_size(in_path)?;
+            reader.process_parallel(&mut processor, config.threads as usize)?;
+        }
+        #[cfg(not(feature = "helicase"))]
+        {
+            let reader = reader_with_inferred_batch_size(in_path)?;
+            reader.process_parallel(&mut processor, config.threads as usize)?;
+        }
     }
     let global_stats = Arc::into_inner(processor.global_stats).expect("workers still hold stats");
     let global_minimizers_u64 =

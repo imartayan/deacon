@@ -14,6 +14,8 @@ mod fetch;
 mod filter;
 #[cfg(feature = "io")]
 mod filter_io;
+#[cfg(feature = "helicase")]
+mod helicase_io;
 mod index;
 mod index_format;
 #[cfg(feature = "io")]

@@ -1,3 +1,5 @@
+#[cfg(feature = "helicase")]
+use crate::helicase_io;
 use crate::index_format::load_index_from_path;
 use crate::{ComplexityAlgorithm, FilterDiagnostics, FilterKernel, FilterParams, Index};
 use anyhow::{Context, Result};
@@ -1673,6 +1675,21 @@ pub fn filter_files(
             reader.process_parallel(processor.clone(), num_threads)?;
         }
         Input::FastxSingle(reader) => {
+            #[cfg(feature = "helicase")]
+            if !config.ordered
+                && config.input_path.as_os_str() != "-"
+                && !is_special_input_path(&config.input_path)
+            {
+                drop(reader);
+                helicase_io::process_parallel::<{ helicase_io::FILTER_CONFIG }, _>(
+                    &config.input_path,
+                    &mut processor,
+                    num_threads,
+                )?;
+            } else {
+                reader.process_parallel(&mut processor, num_threads)?;
+            }
+            #[cfg(not(feature = "helicase"))]
             reader.process_parallel(&mut processor, num_threads)?;
         }
         Input::FastxInterleaved(reader) => {
